@@ -12,14 +12,14 @@ public class Day0 extends Day {
 
 
     @Override
-    public int part1(String input) {
+    long part1(String input) {
         return Arrays.stream(input.split("\n"))
             .mapToInt(Integer::parseInt)
             .map(i -> i * i)
             .sum();
     }
 
-    public int part2(String input) {
+    long part2(String input) {
         return Arrays.stream(input.split("\n"))
             .mapToInt(Integer::parseInt)
             .map(i -> i * i * i)
