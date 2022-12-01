@@ -19,7 +19,7 @@ public abstract class Day {
     }
 
     void test() {
-        System.out.printf("Running Day %d%n", n);
+        System.out.printf("Running Day %d (sample)%n", n);
         run(readFile("Day%d_sample.txt".formatted(n)));
     }
 
