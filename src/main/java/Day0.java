@@ -1,28 +1,29 @@
-import java.util.Arrays;
-
 public class Day0 extends Day {
 
-    Day0() {
-        super(0, "Sum of squares", "Sum of cubes");
-    }
-
     public static void main(String[] args) {
-        new Day0().solve();
+        Day0 day = new Day0();  // https://adventofcode.com/2022/day/0
+
+        String sample = readFile("%s_sample.txt".formatted(day.name()));
+        String full = readFile("%s.txt".formatted(day.name()));
+
+        assertEquals(0, day.part1(sample));
+        assertEquals(0, day.part1(full));
+
+        assertEquals(0, day.part2(sample));
+        assertEquals(0, day.part2(full));
+
+        day.run(full, day::part1, "Part 1 result");
+        day.run(full, day::part2, "Part 2 result");
     }
 
 
     @Override
-    long part1(String input) {
-        return Arrays.stream(input.split("\n"))
-            .mapToInt(Integer::parseInt)
-            .map(i -> i * i)
-            .sum();
+    public String part1(String input) {
+        return "0";
     }
 
-    long part2(String input) {
-        return Arrays.stream(input.split("\n"))
-            .mapToInt(Integer::parseInt)
-            .map(i -> i * i * i)
-            .sum();
+    @Override
+    public String part2(String input) {
+        return "0";
     }
 }

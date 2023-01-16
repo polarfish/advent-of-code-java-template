@@ -1,56 +1,66 @@
+import java.io.BufferedInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+import java.util.List;
+import java.util.Objects;
+import java.util.function.Function;
+import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 public abstract class Day {
 
-    private final int n;
-    private final String part1Label;
-    private final String part2Label;
-
-    Day(int n) {
-        this(n, "Part 1 result", "Part 2 result");
+    String name() {
+        return getClass().getSimpleName();
     }
 
-    Day(int n, String part1Label, String part2Label) {
-        this.n = n;
-        this.part1Label = part1Label;
-        this.part2Label = part2Label;
+    long run() {
+        return run(readFile("%s.txt".formatted(name())));
     }
 
-    void test() {
-        System.out.printf("Running Day %d (sample)%n", n);
-        run(readFile("Day%d_sample.txt".formatted(n)));
+    long run(String input) {
+        System.out.printf("Running %s%n", getClass().getSimpleName());
+        long time1 = run(input, this::part1, "Part 1 result");
+        long time2 = run(input, this::part2, "Part 2 result");
+        return time1 + time2;
     }
 
-    void solve() {
-        System.out.printf("Running Day %d%n", n);
-        run(readFile("Day%d.txt".formatted(n)));
+    long run(String input, Function<String, String> function, String label) {
+        long start = System.currentTimeMillis();
+        String res = function.apply(input);
+        long time = System.currentTimeMillis() - start;
+        System.out.printf("[%d ms] %s: %s%n", time, label, res);
+        return time;
     }
 
-    private void run(String input) {
-        long start1 = System.currentTimeMillis();
-        long res1 = part1(input);
-        long time1 = System.currentTimeMillis() - start1;
-        System.out.printf("%s: %d%n", part1Label, res1);
-        System.out.printf("Part 1 took %d ms%n", time1);
+    abstract String part1(String input);
 
-        long start2 = System.currentTimeMillis();
-        long res2 = part2(input);
-        long time2 = System.currentTimeMillis() - start2;
-        System.out.printf("%s: %d%n", part2Label, res2);
-        System.out.printf("Part 2 took %d ms%n", time2);
-    }
+    abstract String part2(String input);
 
-    abstract long part1(String input);
+    public static String readFile(String fileName) {
 
-    abstract long part2(String input);
+        try (InputStream is = Day.class.getResourceAsStream(fileName);
+            BufferedInputStream bis = new BufferedInputStream(
+                Objects.requireNonNull(is, () -> "File %s not found".formatted(fileName)))) {
 
-    private String readFile(String fileName) {
-        try {
-            return Files.readString(Path.of("src/main/resources/" + fileName));
+            ByteArrayOutputStream buf = new ByteArrayOutputStream();
+            for (int result = bis.read(); result != -1; result = bis.read()) {
+                buf.write((byte) result);
+            }
+            return buf.toString(StandardCharsets.UTF_8);
         } catch (IOException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    public static void assertEquals(long expected, String actual) {
+        assertEquals(String.valueOf(expected), actual);
+    }
+
+    public static void assertEquals(String expected, String actual) {
+        if (!Objects.equals(expected, actual)) {
+            throw new AssertionError("expected: %s, actual: %s".formatted(expected, actual));
         }
     }
 }
