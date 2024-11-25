@@ -3,7 +3,7 @@ import java.util.stream.Stream;
 public class AllDaysRunner {
 
     public static void main(String[] args) {
-        System.out.println("Running Advent Of Code 2023");
+        System.out.println("Running Advent Of Code 2024");
         long totalTime =
             Stream.of(
                 new Day0()
