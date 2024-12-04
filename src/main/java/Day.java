@@ -1,13 +1,8 @@
-import java.io.BufferedInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
-import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
-import java.util.function.Predicate;
-import java.util.stream.Stream;
 
 public abstract class Day {
 
@@ -39,16 +34,9 @@ public abstract class Day {
     abstract String part2(String input);
 
     public static String readFile(String fileName) {
-
-        try (InputStream is = Day.class.getResourceAsStream(fileName);
-            BufferedInputStream bis = new BufferedInputStream(
-                Objects.requireNonNull(is, () -> "File %s not found".formatted(fileName)))) {
-
-            ByteArrayOutputStream buf = new ByteArrayOutputStream();
-            for (int result = bis.read(); result != -1; result = bis.read()) {
-                buf.write((byte) result);
-            }
-            return buf.toString(StandardCharsets.UTF_8);
+        try (InputStream is = Day.class.getResourceAsStream(fileName)) {
+            Objects.requireNonNull(is, () -> "File %s not found".formatted(fileName));
+            return new String(is.readAllBytes(), StandardCharsets.UTF_8);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
