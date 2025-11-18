@@ -1,4 +1,4 @@
-# Advent Of Code 2024 in Java
+# Advent Of Code 2025 in Java
 
 ## Instructions
 
